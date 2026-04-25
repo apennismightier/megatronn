@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="assets/MegaTronn.png" width="320" alt="MegaTronn" />
-
 # MegaTronn
 
 **Powered by DeceptiCloud**

@@ -77,6 +77,4 @@ MegaTronn is a feature-rich desktop client for [Mega.nz](https://mega.nz) inspir
 
 *"Decepticons, DOWNLOAD!"*
 
-<img src="assets/MegaTronnIcon.png" width="80" alt="MegaTronn Icon" />
-
 </div>

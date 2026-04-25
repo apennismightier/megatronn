@@ -6,7 +6,7 @@
 
 **Powered by DeceptiCloud**
 
-A high-performance, open-source Mega.nz desktop client for Windows, macOS, and Linux.
+A high-performance, open-source Mega.nz desktop client for Windows.
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-purple.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)

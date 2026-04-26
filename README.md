@@ -136,14 +136,4 @@ MegaTronn's parallel download engine was designed to address the bottlenecks in 
 
 ---
 
-## Legal
-
-Released under the **GPL-3.0 License**. See [LICENSE](LICENSE).
-
-MegaTronn is not affiliated with, endorsed by, or connected to Mega Limited. Use responsibly and in accordance with [Mega's Terms of Service](https://mega.io/terms).
-
-Inspired by [MegaBasterd](https://github.com/tonikelope/megabasterd) by tonikelope (GPL-3.0).
-
----
-
 <div align="center"><i>"Decepticons, DOWNLOAD!"</i></div>

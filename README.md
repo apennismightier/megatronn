@@ -1,14 +1,16 @@
 <div align="center">
 
+[![MegaTronn](https://i.ibb.co/zhn5pDvf/Mega-Tronn.png)](https://github.com/apennismightier/megatronn)
+
 # MegaTronn
 
 **Powered by DeceptiCloud**
 
-A high-performance, open-source Mega.nz desktop client for Windows.
+An open-source Mega.nz desktop client for Windows — built for speed, bulk account management, and automation.
 
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-purple.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://python.org)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)]()
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.0.1-brightgreen.svg)]()
 
 </div>
 
@@ -16,18 +18,7 @@ A high-performance, open-source Mega.nz desktop client for Windows.
 
 ## What is MegaTronn?
 
-MegaTronn is a feature-rich desktop client for [Mega.nz](https://mega.nz) inspired by [MegaBasterd](https://github.com/tonikelope/megabasterd). It was built from the ground up in Python with a focus on:
-
-- **Throughput** — parallel chunked downloads with per-worker HTTP keep-alive connections
-- **Flexibility** — multi-account management with groups, YAML import, and per-account link libraries  
-- **Automation** — live clipboard monitoring that detects Mega links (plain or Base64-encoded) the instant you copy them
-- **Transparency** — every download is visible, stoppable, and persists across restarts
-
----
-
-## Screenshots
-
-> *Add screenshots here once the app is running on your machine.*
+MegaTronn is an open-source Mega.nz desktop client for Windows, built for people who manage large numbers of accounts and need fast, parallel downloads. It was inspired by MegaBasterd and built from the ground up in Python with a focus on throughput, multi-account management, and automation.
 
 ---
 
@@ -35,44 +26,124 @@ MegaTronn is a feature-rich desktop client for [Mega.nz](https://mega.nz) inspir
 
 ### Downloads
 - **Parallel chunked downloads** — up to 32 simultaneous worker threads per file, each with its own independent Mega session and HTTP keep-alive connection
-- **8 MB chunks** by default (configurable 1–64 MB) — dramatically reduces round-trip overhead vs. Mega's internal 1 MB scheme
-- **Live progress** — real filename, bytes transferred, speed (MB/s), and per-worker status
-- **Pause / Resume / Stop** per transfer, or **Pause All / Resume All / Cancel All** globally
-- **Persistent queue** — downloads survive closing and restarting the app
-- **DLC / link container import** — `.dlc`, `.ccf`, `.rsdf`, `.txt` file formats supported
-- **Folder link support** — fetches file list from public folder links and queues each file
+- **8 MB chunks by default** (configurable 1–64 MB) — dramatically reduces round-trip overhead compared to Mega's internal 1 MB scheme
+- **Public folder support** — paste a folder link and every file inside is queued automatically, with the correct share context passed to each chunk request
+- **Chunk-level resume** — downloads interrupted by pausing, closing the app, or a crash resume from exactly where they left off
+- **Persistent queue** — the download list survives restarts; running downloads become queued and pick up automatically
+- **Pause / Resume / Cancel** per transfer, or globally with Pause All / Resume All / Cancel All
+- **DLC / link container import** — supports `.dlc`, `.ccf`, `.rsdf`, and `.txt` formats
 
 ### Link Parser
 - **Automatic clipboard monitoring** — detects Mega links the instant you copy them, no clicking required
 - **Base64 decoding** — automatically decodes links encoded up to 2 layers deep
-- **Pre-download review** — expand any link to see its contents; remove individual files before confirming
-- **Single "Download" button** — queues everything in one click
+- **Pre-download review** — inspect links before queuing, remove individual files
 
 ### Account Manager
-- **Multi-account support** — unlimited accounts with fast switching
-- **Account Groups** — organise accounts into collapsible groups (e.g. by show name or genre)
+- **Multi-account support** — unlimited accounts, fast switching
+- **Account Groups** — organise accounts into collapsible named groups
 - **Sort** by name, email, or date added — ascending or descending
-- **Search** — live filter across account names, emails, and group names simultaneously
+- **Live search** — filters accounts and groups simultaneously as you type
 - **Rename** accounts or groups in-place (F2 or right-click)
-- **Move between groups** — single accounts or bulk selection
-- **YAML import** — import hundreds of accounts at once from a structured YAML file, with optional `group:` field for automatic group assignment
-- **Per-account link library** — store and manage links associated with each account
-- **Base64 encoder** — encode any stored link to Base64 ×1 or ×2 with one-click copy
+- **Edit Credentials** — change display name, email, and password for any account
+- **Move between groups** — single or bulk selection
+- **YAML bulk import** — import hundreds of accounts at once with optional group assignment
+- **Ctrl+A** to select all, then bulk delete
+- **Double-click to login** — automatically switches to the Cloud Drive tab on success
 
-### Smart Proxy (optional)
-- Rotate across a list of HTTP/SOCKS4/SOCKS5 proxies
-- Automatically ban slow or failing proxies (configurable ban duration)
-- Auto-refresh proxy list from a URL
-- Per-chunk rotation for maximum anonymity
-- Falls back to system proxies / VPN when Smart Proxy is disabled
+### Account Reactivator
+- Opens a **headless Edge or Chrome browser** (invisible) and logs into mega.nz for accounts the API won't accept
+- **Triggered automatically** when a login fails — prompts you to attempt browser-based reactivation
+- Handles **CAPTCHA** by reopening with a visible browser so you can solve it manually
+- **Batch mode** — reactivate multiple accounts sequentially with a 3-second delay between each to avoid rate limiting
+- Live progress dialog showing per-account status: Reactivated / Wrong Password / Not Found / Rate Limited / Suspended
+- Uses Selenium 4.6+ Selenium Manager to **auto-download the correct Edge/Chrome driver** — no manual setup
 
 ### Cloud Drive
-- Browse your Mega.nz cloud drive when logged in
-- Download files directly from the file tree
-- Upload files to your account
+- Browse your Mega cloud drive after logging in
+- Download files or entire folders with a single click
+- **Drag and drop upload** — drag files from Explorer onto the Cloud Drive panel
+- Upload progress bar with live speed readout
+- New Folder creation
 
-<div align="center">
+### Smart Proxy
+- Auto-detects system/VPN proxy from environment variables and Windows registry (enabled by default)
+- Optional proxy rotation list (HTTP/SOCKS4/SOCKS5) for sustained downloads
+- Per-chunk rotation, configurable ban duration for failing proxies
 
-*"Decepticons, DOWNLOAD!"*
+### Logging
+- Rotating log file at `%USERPROFILE%\.megatronn\logs\megatronn.log`
+- Live log viewer — **Tools → View / Export Log** — with level filtering and auto-refresh
+- One-click export to Desktop as a timestamped `.txt` file for diagnostics
 
-</div>
+---
+
+## Installation
+
+### Requirements
+- Windows 10 or 11 (64-bit)
+- Microsoft Edge or Google Chrome *(for Account Reactivator — Edge is built into every Windows 10/11 install)*
+
+### Install
+1. Download **MegaTronn_Setup_v1.0.1.exe** from the [Releases](https://github.com/apennismightier/megatronn/releases) section
+2. Run the installer and follow the prompts
+3. Launch MegaTronn from the Start Menu or Desktop shortcut
+
+> No Python, no command line, no additional setup required.
+
+---
+
+## YAML Account Import Format
+
+Import hundreds of accounts at once via **Import YAML** in the sidebar:
+
+```yaml
+accounts:
+  - name: "Show Name (14 GB)"
+    email: "user@example.com"
+    password: "yourpassword"
+    group: "Show Name"          # auto-creates the group in the sidebar
+    links:
+      - "https://mega.nz/folder/XXXXXXXX#YYYYYYYY"
+
+  - name: "Standalone Account"
+    email: "solo@example.com"
+    password: "pass"
+    # no group: = added to Ungrouped
+```
+
+Accepted aliases: `user` or `username` for email, `pass` or `pwd` for password, `files` for links.
+
+---
+
+## Performance
+
+MegaTronn's parallel download engine was designed to address the bottlenecks in standard mega.py:
+
+| Setting | Default | Notes |
+|---|---|---|
+| Workers per download | 8 | Each with its own Mega session + HTTP keep-alive (configurable 1–32) |
+| Chunk size | 8 MB | vs mega.py's 1 MB scheme — 8× fewer round-trips (configurable 1–64 MB) |
+| Max simultaneous downloads | 3 | Configurable in Settings |
+| Smart Proxy | On | Auto-detects system/VPN proxy from Windows registry and environment variables |
+
+---
+
+## Known Limitations
+
+- **Account reactivation** — works for accounts that Mega has soft-suspended (last active flag). Accounts permanently deleted by Mega will show "Not Found" and cannot be recovered.
+- **Upload speed** — uploads are single-threaded (Mega's API does not support parallel upload streams). Progress is shown live.
+- **Folder downloads** — requires the folder share key to be present in the link. Private folders require being logged in to the owning account.
+
+---
+
+## Legal
+
+Released under the **GPL-3.0 License**. See [LICENSE](LICENSE).
+
+MegaTronn is not affiliated with, endorsed by, or connected to Mega Limited. Use responsibly and in accordance with [Mega's Terms of Service](https://mega.io/terms).
+
+Inspired by [MegaBasterd](https://github.com/tonikelope/megabasterd) by tonikelope (GPL-3.0).
+
+---
+
+<div align="center"><i>"Decepticons, DOWNLOAD!"</i></div>

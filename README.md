@@ -168,6 +168,6 @@ If you're submitting a PR, please:
 
 ## License
 
-[MIT](LICENSE) © [DeceptiCloud](https://github.com/apennismightier)
+© [DeceptiCloud](https://github.com/apennismightier)
 
 mega.nz, Mega, and the Mega logo are trademarks of Mega Limited. This project is not affiliated with or endorsed by Mega Limited.

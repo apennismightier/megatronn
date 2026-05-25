@@ -6,21 +6,6 @@
 
 **Powered by DeceptiCloud**
 
-An open-source Mega.nz desktop client for Windows — built for speed, bulk account management, and automation.
-
-[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-purple.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)]()
-[![Version](https://img.shields.io/badge/Version-1.0.1-brightgreen.svg)]()
-
-
-<div align="center">
-
-<img src="resources/icon.png" alt="MegaTronn" width="128" height="128">
-
-# MegaTronn
-
-**A modern desktop client for Mega.nz — built for speed, scale, and sanity.**
-
 [![Version](https://img.shields.io/github/v/release/apennismightier/megatronn?label=latest&color=22c55e)](https://github.com/apennismightier/megatronn/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4?logo=windows)](#installation)

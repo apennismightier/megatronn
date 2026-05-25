@@ -1,6 +1,8 @@
 <div align="center">
 
-[![MegaTronn](https://i.ibb.co/zhn5pDvf/Mega-Tronn.png)](https://github.com/apennismightier/megatronn)
+<a href="https://github.com/apennismightier/megatronn">
+  <img src="https://i.ibb.co/zhn5pDvf/Mega-Tronn.png" alt="MegaTronn" width="400">
+</a>
 
 # MegaTronn
 

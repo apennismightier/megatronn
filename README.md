@@ -9,7 +9,6 @@
 **Powered by DeceptiCloud**
 
 [![Version](https://img.shields.io/github/v/release/apennismightier/megatronn?label=latest&color=22c55e)](https://github.com/apennismightier/megatronn/releases)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](#license)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4?logo=windows)](#installation)
 [![Built with Electron](https://img.shields.io/badge/Electron-28-47848F?logo=electron)](https://www.electronjs.org/)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev/)

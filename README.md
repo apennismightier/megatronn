@@ -1,5 +1,8 @@
 <div align="center">
-MegaTronn
+
+<img src="docs/img/megatronn.png" alt="MegaTronn" width="320" />
+
+# MegaTronn
 
 A desktop client for MEGA.nz — link containers, multi-connection downloads, bulk account management, and inactivity protection, without a browser tab open.
 

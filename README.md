@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="[docs/img/megatronn.png](https://i.ibb.co/zhn5pDvf/Mega-Tronn.png)" alt="MegaTronn" width="320" />
+<img src="https://i.ibb.co/zhn5pDvf/Mega-Tronn.png" alt="MegaTronn" width="320" />
 
 # MegaTronn
 

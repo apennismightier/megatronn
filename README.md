@@ -4,6 +4,8 @@
 
 # MegaTronn
 
+</div>
+
 A desktop client for MEGA.nz — link containers, multi-connection downloads, bulk account management, and inactivity protection, without a browser tab open.
 
 MegaTronn is an Electron desktop app for people who work with a lot of MEGA links and a lot of MEGA accounts. It parses link containers, downloads over multiple connections with real resume, manages accounts in bulk, and keeps stored files from being purged for inactivity.

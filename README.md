@@ -1,173 +1,142 @@
 <div align="center">
+MegaTronn
 
-<a href="https://github.com/apennismightier/megatronn">
-  <img src="https://i.ibb.co/zhn5pDvf/Mega-Tronn.png" alt="MegaTronn" width="400">
-</a>
+A desktop client for MEGA.nz — link containers, multi-connection downloads, bulk account management, and inactivity protection, without a browser tab open.
 
-# MegaTronn
+MegaTronn is an Electron desktop app for people who work with a lot of MEGA links and a lot of MEGA accounts. It parses link containers, downloads over multiple connections with real resume, manages accounts in bulk, and keeps stored files from being purged for inactivity.
 
-**Powered by DeceptiCloud**
+Built on megajs for the MEGA protocol, React for the UI, and packaged as a per-user install that never needs admin rights.
 
-[![Version](https://img.shields.io/github/v/release/apennismightier/megatronn?label=latest&color=22c55e)](https://github.com/apennismightier/megatronn/releases)
-[![Platform: Windows](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4?logo=windows)](#installation)
-[![Built with Electron](https://img.shields.io/badge/Electron-28-47848F?logo=electron)](https://www.electronjs.org/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+Features
+⬇️ Downloads and transfers
+Multi-connection chunked downloads with configurable connection count and chunk size
+Resume from disk — progress is persisted to a .part file plus a sidecar, so an interrupted transfer restarts from the exact byte it reached, surviving app restarts, network drops and IP changes
+Bandwidth-limit handling — when MEGA's transfer quota is hit the transfer pauses, keeps its partial file, and retries on a short interval; change your IP and it resumes from saved progress instead of starting over
+429 rate-limit backoff with automatic retry
+Integrity checking — optional MAC verification of completed downloads
+Duplicate detection, so an already-downloaded file doesn't spend transfer quota twice
+Uploads to a chosen folder
+Queue control — reorder, pause/resume, retry failed, clear completed, copy failed links, reveal in folder
+Sleep prevention while transfers are active
+🔗 Link parsing
+Extract every MEGA link from arbitrary pasted text
+Import DLC, CCF and RSDF containers, including base64-wrapped payloads
+Registered as file associations — double-click a container or drop it on the exe
+Clipboard monitor — optionally collect MEGA links as you copy them
+Folder browsing — expand a folder link and select individual files
+My Links — links saved per account
+☁️ Cloud Drive
 
-</div>
+mega.nz embedded in the app with auto-login for the selected account.
 
----
+👥 Account management
+Accounts organised into groups, with search and bulk operations
+Passwords encrypted at rest via Electron's safeStorage (OS keychain) — the store file is useless if copied to another machine
+Sessions are closed properly using MEGA's sml session logout, so live sessions don't pile up on an account over time
+🔄 Import / Export wizard
 
-## What is it?
+Bulk account lists arrive in whatever shape someone saved them in. Rather than guessing and silently getting it wrong, the wizard shows how it intends to read your file and lets you fix it first.
 
-MegaTronn is an unofficial desktop client for [Mega.nz](https://mega.nz/) that turns the painful workflow of "open browser, paste link, log in, click download" into a one-window experience. Manage hundreds of Mega accounts, parse links out of any messy paste, download in parallel at full bandwidth, and upload through an embedded browser that actually behaves like a real one.
+Formats: CSV, TXT, TSV, YAML, JSON, four-line blocks, plain email:password
+Separator detection — comma, semicolon, tab, colon, pipe, space; records split by line, blank line, semicolon, pipe, or nothing at all
+Files with no line breaks are split every N fields. That number is genuinely underivable from the text — a@b.com,p1,a@c.com,p2 is either one 4-field record or two 2-field records — so it is estimated, labelled as an estimate, and left editable
+Column mapping — Name / Email / Password / Group / Links / Ignore, each showing a sample value from your own file
+Group import toggle for files with no group column
+"Last column keeps extra separators" so URLs and passwords containing the separator survive intact
+Live preview of exactly how rows will be saved, which rows will be skipped and why, and an explicit approval step before anything is written
+Export to CSV or TXT with delimiter choice, optional header and per-column selection; values containing the delimiter, a quote or a newline are quoted automatically, so exports re-import cleanly
+♻️ Account Refresher
 
-Built because the official MEGAsync client doesn't handle multi-account workflows, link-list ingestion, or batch reactivation — and because the browser webclient stalls out the moment you try to do anything at scale.
+MEGA deletes the files in an account after roughly three months of inactivity (ToS 37.4) — the account itself survives. The Refresher keeps stored data alive by logging in on a schedule.
 
-> **Disclaimer:** MegaTronn is independent third-party software. It is not affiliated with, endorsed by, or connected to Mega Limited. You are responsible for ensuring your use complies with Mega's Terms of Service.
+Capacity planning — logins/day required vs your cap, with a loud warning when a full sweep would take longer than the inactivity window and the minimum cap that fixes it
+At-risk list — accounts the daily cap is about to push past their deadline
+Needs-attention list — wrong password or 2FA, paused rather than retried forever
+Pacing controls — max logins/day, interval, inter-login gap, safety margin
+Jittered scheduling (±7 days/account) so bulk-added accounts don't clump
+Error classification by numeric MEGA code, never by string matching — see Architecture
+Defers, never preempts — an account open in Cloud Drive or used by a transfer is skipped until free
+Per-account Test button — log in right now and see the real result
+Off by default
+⚕️ Rescue
 
----
+A separate tool driving an isolated browser session against mega.nz, for accounts needing manual recovery rather than a routine login. Storage is cleared between accounts.
 
-## Features
+🩺 Diagnostics
 
-### Multi-Account Management
-- Unlimited accounts organized into named groups (`Personal`, `Archive-A`, etc.)
-- **Bulk import** from YAML lists, plain 4-line blocks, or `email:password` colon format — pasted or from file, with live preview
-- Collapsible groups, alphabetical sort, multi-select with bulk move/delete
-- Resizable account sidebar (180–520px), state persisted across restarts
-- Custom group autocomplete that scales to hundreds of groups (vanilla `<datalist>` broke at 100+)
+Built-in log viewer, one-click diagnostic export, live performance monitor, and an auto-updater that checks GitHub Releases and installs in place.
 
-### Link Parser
-- Extracts Mega URLs from arbitrary text — single and double Base64 decoded
-- Container file support: drag-and-drop or "Open with..." for **`.dlc`**, **`.ccf`**, **`.rsdf`**, and **`.txt`**
-- **Clipboard auto-capture** (800ms polling) routes copied Mega links into the parser queue — no surprise downloads, you click when you're ready
-- **📂 Browse folder** any `/folder/` link inline: see every file inside, untick what you don't want, download only what you pick
+Install
 
-### Parallel Downloader
-- **12 concurrent connections per file**, **16 MB chunks** — auto-tuned to Mega's per-IP throughput sweet spot
-- Up to 6 simultaneous transfers by default; bump higher if your bandwidth supports it
-- 8 MB disk write buffer so 16 MB chunks don't stall on backpressure
-- **Transfer queue persists** across app restarts and version upgrades — in-flight downloads resume from scratch, completed history is preserved
-- Anonymous fallback when an account session expires (`ESID` errors) — public links don't need a logged-in account
-- Per-transfer pause/resume, bulk pause-all / resume-all / cancel-all
-- ▶ **Open** file with default app, 📁 **Show in Explorer/Finder** on completed rows
+Grab the latest installer from Releases.
 
-### Embedded Cloud Drive
-- mega.nz rendered inline as a fully-functional browser tab — auto-login with stored credentials, persistent session per account
-- **Auto-transfer worker hook** eliminates the "Data cannot be cloned, out of memory" crash that kills uploads of large files in stock embedded browsers (Mega's upload code clones every chunk via `postMessage` — we transfer ownership instead, zero allocation)
-- 16 GB V8 heap headroom for large file workloads
-- 🗑 **Clear Cache** button for one-click session reset when Mega's IndexedDB cache fills up
-- File-path privacy: your local upload paths are hidden from mega.nz's page (uploads show only filenames, never `C:\Users\you\Documents\...`)
-- Auto-recovery: if an upload fails with memory pressure anyway, the webview silently clears storage and reloads — you keep working
+[!WARNING] The installer is unsigned. Windows SmartScreen will warn you — click More info → Run anyway. Building from source avoids this entirely.
 
-### Account Reactivator
-- Headless browser-based reactivation for dormant accounts
-- Batch queue with configurable delays
-- CAPTCHA escalation to the user when automated solving fails
+Installs per-user to %LocalAppData%\Programs\MegaTronn. No admin rights required, which also means in-app updates never need elevation and pinned taskbar shortcuts survive them.
 
-### Smart Proxy
-- HTTP, SOCKS4, SOCKS5 protocols
-- Per-chunk proxy rotation (so a slow/dead proxy doesn't tank a whole transfer)
-- Configurable ban duration when a proxy returns errors
+Build from source
 
-### Quality of Life
-- **GitHub Releases auto-update checker** — top-banner notification when a newer version is published; click to view release notes, install at your pace
-- Embedded log viewer with live tail, level filter (`INFO` / `WARN` / `ERROR`), and one-click Desktop export
-- My Links library — per-account saved links with Base64 encoder
-- File associations: double-click any `.dlc` / `.ccf` / `.rsdf` and MegaTronn opens it
-- System tray + minimize-to-tray
-- Single-instance enforcement: opening a second container file routes through the running window instead of spawning duplicates
-- Pinned taskbar icon survives version upgrades (locked AppUserModelID + fixed install path)
+Requirements
 
----
-
-## Installation
-
-### Pre-built (Windows)
-
-1. Download the latest `MegaTronn-Setup-<version>.exe` from the [Releases page](https://github.com/apennismightier/megatronn/releases/latest).
-2. Run it. The installer is per-user (no admin rights required) and installs to `%LocalAppData%\Programs\MegaTronn`.
-3. Pin to taskbar — your pin will survive future updates.
-
-### From source
-
-```bash
-git clone https://github.com/apennismightier/megatronn.git
-cd megatronn
+Node.js 20.19+ or 22.12+ — electron-vite 5 refuses older 20.x releases
+npm 10+
+bash
 npm install
-npm run dev          # development with HMR
-# or
-npm run build:win    # produces dist/MegaTronn-Setup-<version>.exe
-```
+npm run dist:win
 
-Requirements: Node.js 18+, npm, and on Windows: Visual Studio Build Tools (for any native deps).
+Or run build.bat, which self-elevates, clears stale caches, verifies the compiled renderer actually changed, then packages. The installer lands in dist\.
 
----
+bash
+npm run dev      # hot-reload development
+npm run build    # compile only, no packaging
+Testing
 
-## Tech Stack
+The scheduling and parsing engines are deliberately pure — no Electron imports, no I/O — so they run under plain Node with no test framework:
 
-| Layer        | Stack                                                         |
-|--------------|---------------------------------------------------------------|
-| Runtime      | Electron 28 (Chromium 120, Node 18)                           |
-| UI           | React 18 + TypeScript 5 + Tailwind CSS                        |
-| Build        | electron-vite (renderer + main), electron-builder NSIS (installer) |
-| State        | Zustand                                                       |
-| Persistence  | electron-store (settings + accounts), JSON (transfer queue)   |
-| Logging      | electron-log → `%AppData%\megatronn\logs\main.log`            |
-| Mega API     | [`megajs`](https://github.com/qgustavor/mega) (TypeScript)    |
+bash
+cd test
+node --experimental-strip-types --no-warnings account-format.test.ts      # 58 assertions
+node --experimental-strip-types --no-warnings refresher-schedule.test.ts  # 118 assertions
+node --experimental-strip-types --no-warnings session-registry.test.ts    # 19 assertions
 
----
+Keep them pure. If you add a branch to an engine, add a test. Both engines have shipped bugs that these suites caught before release.
 
-## Configuration
+Project structure
+src/
+  main/                      Electron main process
+    transfer-manager.ts      Download engine — chunking, resume, quota + 429 handling
+    account-format.ts        PURE: import/export parsing, mapping, serialization
+    refresher-schedule.ts    PURE: all refresher scheduling decisions
+    refresher.ts             Refresher runtime — megajs ping, batching, persistence
+    session-registry.ts      PURE: session leases (refresher defers to user/transfers)
+    accounts.ts              Account persistence, safeStorage encryption
+    mega-service.ts          megajs Storage session wrapper
+    reactivator.ts           Browser automation for the Rescue tab
+    link-parser.ts           DLC / CCF / RSDF container parsing
+    creator/                 Account creation subsystem
+    ipc-handlers.ts          All IPC
+  preload/                   contextBridge surface (window.api)
+  renderer/                  React UI
+test/                        Plain-node test suites
+Architecture
 
-Everything is in-app under **Settings** (gear icon). Defaults are tuned for Mega's optimal throughput — most users never need to touch them.
+A few decisions that are load-bearing and shouldn't be reversed without reading why:
 
-- **Downloads**: max concurrent transfers, default destination, incomplete-file directory
-- **Performance**: per-file connections, chunk size — auto-floored to optimal values if set too low
-- **Paths**: where downloaded files land, where the log lives
-- **Proxy**: protocol, server list, rotation rules
-- **Reactivator**: headless on/off, delay range between attempts
+Pure engines. All scheduling and parsing logic lives in modules with zero Electron imports. That's what makes them testable with plain Node, and it's why bugs get caught before they ship rather than after. Date maths belongs in refresher-schedule.ts, not in the runtime around it.
 
-Settings, accounts, and the transfer queue live in `%AppData%\megatronn\` (or your platform equivalent). The app **does not** make outbound network requests other than to mega.nz and to GitHub (once per launch, for the update check).
+Errors are classified by numeric code, not by string matching. An earlier version regex'd error strings, which made a throttle response and a genuinely blocked account indistinguishable — everything looked "deactivated". Now: 429 and -3 mean we are being throttled and never count against the account; -16 is the only real blocked signal and needs two consecutive hits before an account is flagged; anything unrecognised is treated as transient. An account is never marked dead because parsing failed.
 
----
+One session lease covers everything. Transfers don't open their own MEGA sessions — they borrow the user's. So a lease taken at login covers Cloud Drive browsing and in-flight transfers alike, and the refresher simply skips anything held. Leases self-expire after 12 hours so a crash can't wedge an account permanently.
 
-## Privacy & Safety
+Refreshing is not rescuing. The refresher uses the megajs API (~1s per account, no browser fingerprint, clean session teardown). The browser-driving Rescue tool is kept for what it's actually good at: manually recovering an account that needs a real browser session.
 
-- **No telemetry.** No analytics SDK, no error reporting service, no "usage data" of any kind.
-- **No ads.** Nothing is monetized.
-- **Local-only state.** Accounts, settings, transfer queue, logs — all on your disk, never transmitted.
-- **One outbound check** per app launch to `api.github.com` for the version check (anonymous, no identifier sent beyond a `User-Agent: MegaTronn/<version>` header).
-- The embedded browser sandboxes each account in its own session partition — accounts cannot see each other's cookies, storage, or upload state.
+Unknown is not the same as fine. Imported accounts carry lastSeenAt: null rather than a fabricated timestamp. Pretending an imported account was "active just now" sets a deadline three months out for an account that might be days from having its files purged.
 
----
+Contributing
 
-## Roadmap
+Issues and pull requests welcome. When reporting a transfer or login problem, please attach the diagnostic export (Log tab → export) — it carries the actual numeric error codes, which is usually the difference between a diagnosis and a guess.
 
-- [ ] macOS + Linux builds
-- [ ] Bandwidth limiter (throttle download speed)
-- [ ] Scheduled / time-windowed transfers
-- [ ] Auto-update with in-app install (currently link-out to GitHub)
-- [ ] Webhook notifications on completion
-- [ ] Folder-level upload queueing from local disk
+If you change a pure engine, run its test suite and add cases for the new branch.
+Changelog
 
-Open an issue if there's something you'd want.
-
----
-
-## Contributing
-
-Issues and PRs welcome. Please attach a diagnostic log (`Settings → Export Diagnostic`) when reporting bugs — it bundles the main log, transfer queue state, settings, and system info in one text file.
-
-If you're submitting a PR, please:
-- Run `npm run lint` before pushing
-- Bump the version in `package.json`, `src/main/index.ts`, and `src/renderer/src/components/About.tsx` together (the three are kept in sync)
-- Add a brief note to the changelog
-
----
-
-## License
-
-© [DeceptiCloud](https://github.com/apennismightier)
-
-mega.nz, Mega, and the Mega logo are trademarks of Mega Limited. This project is not affiliated with or endorsed by Mega Limited.
+See CHANGELOG.md for the full history.
